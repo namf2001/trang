@@ -11,8 +11,12 @@ export const env = createEnv({
       process.env.NODE_ENV === "production"
         ? z.string()
         : z.string().optional(),
-    AUTH_GITHUB_ID: z.string().optional(),
-    AUTH_GITHUB_SECRET: z.string().optional(),
+    // Make Discord optional since you're not using it
+    AUTH_DISCORD_ID: z.string().optional(),
+    AUTH_DISCORD_SECRET: z.string().optional(),
+    AUTH_GITHUB_ID: z.string(),
+    AUTH_GITHUB_SECRET: z.string(),
+    // Email provider variables
     EMAIL_SERVER_HOST: z.string().optional(),
     EMAIL_SERVER_PORT: z.string().optional(),
     EMAIL_SERVER_USER: z.string().optional(),
@@ -39,6 +43,8 @@ export const env = createEnv({
    */
   runtimeEnv: {
     AUTH_SECRET: process.env.AUTH_SECRET,
+    AUTH_DISCORD_ID: process.env.AUTH_DISCORD_ID,
+    AUTH_DISCORD_SECRET: process.env.AUTH_DISCORD_SECRET,
     AUTH_GITHUB_ID: process.env.AUTH_GITHUB_ID,
     AUTH_GITHUB_SECRET: process.env.AUTH_GITHUB_SECRET,
     EMAIL_SERVER_HOST: process.env.EMAIL_SERVER_HOST,

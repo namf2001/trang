@@ -2,7 +2,6 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import { type DefaultSession, type NextAuthConfig } from "next-auth";
 import GitHub from 'next-auth/providers/github';
 import Nodemailer from "next-auth/providers/nodemailer"
-import { Role } from "@prisma/client";
 
 import { db } from "@/server/db";
 
@@ -50,21 +49,24 @@ export const authConfig = {
       from: process.env.EMAIL_FROM,
     }),
   ],
-  // Use custom sign in page
   pages: {
-    signIn: "/auth/signin",
+    signIn: "/signin",
   },
   adapter: PrismaAdapter(db),
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
-      const isLoggedIn = auth?.user?.role === Role.ADMIN;
-      const isOnDashboard = nextUrl.pathname.startsWith('/admin');
-      if (isOnDashboard) {
-        if (isLoggedIn) return true;
-        return false;
-      } else if (isLoggedIn) {
+      const isLoggedIn = !!auth?.user;
+      const isOnAdmin = nextUrl.pathname.startsWith('/admin');
+      
+      if (isOnAdmin) {
+        return isLoggedIn; // Chỉ cho phép user đã đăng nhập truy cập /admin
+      }
+      
+      // Tự động redirect user đã đăng nhập đến /admin khi truy cập trang khác
+      if (isLoggedIn && nextUrl.pathname === '/') {
         return Response.redirect(new URL('/admin', nextUrl));
       }
+      
       return true;
     },
     session: ({ session, user }) => ({

@@ -14,18 +14,6 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model Post {
-    id        Int      @id @default(autoincrement())
-    name      String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-
-    createdBy   User   @relation(fields: [createdById], references: [id])
-    createdById String
-
-    @@index([name])
-}
-
 // Necessary for Next auth
 model Account {
     id                       String  @id @default(cuid())
@@ -62,18 +50,94 @@ model User {
     image         String?
     accounts      Account[]
     sessions      Session[]
-    posts         Post[]
-    role          Role    @default(USER)
+    role          Role      @default(USER)
 }
 
 enum Role {
     USER
     ADMIN
 }
+
 model VerificationToken {
     identifier String
     token      String   @unique
     expires    DateTime
 
     @@unique([identifier, token])
+}
+
+enum CategoryName {
+    AUTO
+    ANIMATION
+    BUSINESS
+    CLASSIC
+    COMEDY
+    COOKING
+    CULTURE
+    DOCUMENTARY
+    EDUCATION
+    ENTERTAINMENT
+    FAMILY
+    GENERAL
+    KIDS
+    LEGISLATIVE
+    LIFESTYLE
+    MOVIES
+    MUSIC
+    NEWS
+    SPORTS
+    SINGLE_STREAM
+}
+
+model Country {
+    id        String       @id @default(cuid())
+    name      String       @unique
+    createdAt DateTime     @default(now())
+    updatedAt DateTime     @updatedAt
+    urls      CountryURL[]
+    xtreams   XtreamURL[]
+}
+
+model CountryURL {
+    id        String  @id @default(cuid())
+    country   Country @relation(fields: [countryId], references: [id], onDelete: Cascade)
+    countryId String
+    url       String
+    status    String?
+    isExpired Boolean @default(false)
+
+    @@unique([countryId, url])
+    @@index([url])
+    @@index([status])
+}
+
+model Category {
+    id   String        @id @default(cuid())
+    name CategoryName  @unique
+    urls CategoryURL[]
+}
+
+model CategoryURL {
+    id         String   @id @default(cuid())
+    category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+    categoryId String
+    url        String
+    status     String?
+    isExpired  Boolean  @default(false)
+
+    @@unique([categoryId, url])
+    @@index([url])
+    @@index([status])
+}
+
+model XtreamURL {
+    id        String  @id @default(cuid())
+    url       String
+    country   Country @relation(fields: [countryId], references: [id], onDelete: Cascade)
+    countryId String
+    status    String?
+    isExpired Boolean @default(false)
+
+    @@index([url])
+    @@index([status])
 }
