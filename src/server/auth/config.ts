@@ -2,8 +2,10 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import { type DefaultSession, type NextAuthConfig } from "next-auth";
 import GitHub from 'next-auth/providers/github';
 import Nodemailer from "next-auth/providers/nodemailer"
+import { unauthorized } from 'next/navigation';
 
 import { db } from "@/server/db";
+import { Role } from "@prisma/client";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -16,13 +18,13 @@ declare module "next-auth" {
     user: {
       id: string;
       // ...other properties
-      role: string; 
+      role: string;
     } & DefaultSession["user"];
   }
 
   interface User {
     // ...other properties
-    role?: string; 
+    role?: string;
   }
 }
 
@@ -57,16 +59,23 @@ export const authConfig = {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
       const isOnAdmin = nextUrl.pathname.startsWith('/admin');
-      
+
       if (isOnAdmin) {
-        return isLoggedIn; // Chỉ cho phép user đã đăng nhập truy cập /admin
+        if (!isLoggedIn) {
+          return false;
+        }
+
+        if (auth.user.role !== Role.ADMIN) {
+          return unauthorized();
+        }
+
+        return true;
       }
-      
-      // Tự động redirect user đã đăng nhập đến /admin khi truy cập trang khác
-      if (isLoggedIn && nextUrl.pathname === '/') {
+      // Redirect authenticated admin users away from the home page to the admin dashboard
+      if (isLoggedIn && auth.user.role === Role.ADMIN && nextUrl.pathname === '/') {
         return Response.redirect(new URL('/admin', nextUrl));
       }
-      
+
       return true;
     },
     session: ({ session, user }) => ({
