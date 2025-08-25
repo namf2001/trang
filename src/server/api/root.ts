@@ -1,4 +1,9 @@
 import { postRouter } from "@/server/api/routers/post";
+import { countryRouter } from "@/server/api/routers/country";
+import { categoryRouter } from "@/server/api/routers/category";
+import { countryUrlRouter } from "@/server/api/routers/countryUrl";
+import { categoryUrlRouter } from "@/server/api/routers/categoryUrl";
+import { xtreamUrlRouter } from "@/server/api/routers/xtreamUrl";
 import { createCallerFactory, createTRPCRouter } from "@/server/api/trpc";
 
 /**
@@ -8,6 +13,11 @@ import { createCallerFactory, createTRPCRouter } from "@/server/api/trpc";
  */
 export const appRouter = createTRPCRouter({
   post: postRouter,
+  country: countryRouter,
+  category: categoryRouter,
+  countryUrl: countryUrlRouter,
+  categoryUrl: categoryUrlRouter,
+  xtreamUrl: xtreamUrlRouter,
 });
 
 // export type definition of API
