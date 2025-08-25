@@ -8,18 +8,18 @@ import { notFound } from "next/navigation";
 
 export default function CountryUrlPage() {
   const { data: countries, isLoading, error } = api.country.getAllCountries.useQuery();
-  
+
   if (isLoading) {
     return <Loading />;
   }
 
-  if (error || (countries && countries.length === 0)) {
+  if (error || (countries && countries.length === 0) || !countries) {
     return notFound();
   }
 
   return (
     <Suspense fallback={<Loading />}>
-      <CountryUrls countries={countries || []} />
+      <CountryUrls countries={countries} />
     </Suspense>
   );
 }
