@@ -10,7 +10,7 @@ export const countryRouter = createTRPCRouter({
     }))
     .query(async ({ ctx, input }) => {
       const { limit, cursor } = input;
-      
+
       const countries = await ctx.db.country.findMany({
         take: limit + 1,
         cursor: cursor ? { id: cursor } : undefined,
@@ -35,6 +35,23 @@ export const countryRouter = createTRPCRouter({
         countries,
         nextCursor,
       };
+    }),
+
+  getAllCountries: publicProcedure
+    .query(async ({ ctx }) => {
+      return ctx.db.country.findMany({
+        include: {
+          _count: {
+            select: {
+              urls: true,
+              xtreams: true,
+            },
+          },
+          urls: true,
+          xtreams: true,
+        },
+        orderBy: { name: "asc" },
+      });
     }),
 
   // Lấy country theo ID
