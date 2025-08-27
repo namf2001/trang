@@ -25,8 +25,8 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${geist.variable} ${kamerik205.variable}`}>
-      <body className={`${geist.className} font-sans antialiased`}>
+    <html lang="en" className={`${geist.variable} ${kamerik205.variable}`} suppressHydrationWarning>
+      <body className="font-sans antialiased">
         <ThemeProvider
           attribute="class"
           defaultTheme="light"
