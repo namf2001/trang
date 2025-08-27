@@ -23,6 +23,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { DataTableColumnHeader } from "../data-table/data-table-column-header"
 
 export const schema = z.object({
   id: z.string(),
@@ -89,23 +90,52 @@ export const columns: ColumnDef<z.infer<typeof schema>>[] = [
   },
   {
     accessorKey: "country.name",
-    header: "Country",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Country" />
+    ),
     cell: ({ row }) => (
-      <div className="font-medium">{row.original.country.name}</div>
+      <div className="flex items-center gap-2">
+        <div className="h-4 w-6 rounded-sm bg-gradient-to-r from-blue-500 to-purple-500"></div>
+        <span className="font-medium">{row.original.country.name}</span>
+      </div>
     ),
     enableColumnFilter: true,
+    filterFn: "includesString",
+    size: 150,
   },
   {
     accessorKey: "url",
-    header: "URL",
-    cell: ({ row }) => (
-      <div className="max-w-sm truncate font-medium">{row.getValue("url")}</div>
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="URL" />
     ),
+    cell: ({ row }) => {
+      const url = row.original.url;
+      let domain = '';
+      try {
+        domain = url ? new URL(url).hostname : '';
+      } catch {
+        domain = 'Invalid URL';
+      }
+      return (
+        <div className="flex flex-col gap-1">
+          <div className="font-medium text-sm truncate max-w-xs" title={url}>
+            {url}
+          </div>
+          <div className="text-xs text-muted-foreground">
+            {domain}
+          </div>
+        </div>
+      );
+    },
     enableColumnFilter: true,
+    filterFn: "includesString",
+    size: 250,
   },
   {
     accessorKey: "status",
-    header: "Status",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Status" />
+    ),
     cell: ({ row }) => {
       const status = row.original.status;
       const isExpired = row.original.isExpired;

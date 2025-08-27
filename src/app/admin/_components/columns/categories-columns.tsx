@@ -24,6 +24,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { DataTableColumnHeader } from "../data-table/data-table-column-header"
 
 export const schema = z.object({
   id: z.string(),
@@ -92,7 +93,9 @@ export const columns: ColumnDef<z.infer<typeof schema>>[] = [
   },
   {
     accessorKey: "category.name",
-    header: "Category",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Category" />
+    ),
     cell: ({ row }) => (
       <div className="flex items-center gap-2">
         <IconTag className="h-4 w-4 text-purple-500" />
@@ -105,7 +108,9 @@ export const columns: ColumnDef<z.infer<typeof schema>>[] = [
   },
   {
     accessorKey: "url",
-    header: "URL",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="URL" />
+    ),
     cell: ({ row }) => {
       const url = row.original.url;
       let domain = '';
@@ -131,7 +136,9 @@ export const columns: ColumnDef<z.infer<typeof schema>>[] = [
   },
   {
     accessorKey: "status",
-    header: "Status",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Status" />
+    ),
     cell: ({ row }) => {
       const status = row.original.status;
       const isExpired = row.original.isExpired;

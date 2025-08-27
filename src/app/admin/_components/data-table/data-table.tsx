@@ -41,39 +41,8 @@ import {
   useReactTable,
   type VisibilityState,
 } from "@tanstack/react-table"
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts"
-import { toast } from "sonner"
-import { any, z } from "zod"
 
-import { useIsMobile } from "@/hooks/use-mobile"
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import {
-  type ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart"
-import { Checkbox } from "@/components/ui/checkbox"
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@/components/ui/drawer"
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import {
   Select,
@@ -82,7 +51,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { Separator } from "@/components/ui/separator"
 import {
   Table,
   TableBody,
@@ -91,14 +59,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui/tabs"
+import { DataTableToolbar } from "./data-table-toolbar"
 
-function DraggableRow({ row }: { row: Row<any> }) {
+function DraggableRow({ row }: { readonly row: Row<any> }) {
   const { transform, transition, setNodeRef, isDragging } = useSortable({
     id: row.original.id,
   })
@@ -123,8 +86,6 @@ function DraggableRow({ row }: { row: Row<any> }) {
   )
 }
 
-
-
 export function DataTable({
   data: initialData,
   columns,
@@ -140,6 +101,7 @@ export function DataTable({
     []
   )
   const [sorting, setSorting] = React.useState<SortingState>([])
+  const [globalFilter, setGlobalFilter] = React.useState("")
   const [pagination, setPagination] = React.useState({
     pageIndex: 0,
     pageSize: 10,
@@ -164,14 +126,17 @@ export function DataTable({
       columnVisibility,
       rowSelection,
       columnFilters,
+      globalFilter,
       pagination,
     },
     getRowId: (row) => row.id.toString(),
     enableRowSelection: true,
+    enableGlobalFilter: true,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
+    onGlobalFilterChange: setGlobalFilter,
     onPaginationChange: setPagination,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
@@ -193,7 +158,8 @@ export function DataTable({
   }
 
   return (
-    <React.Fragment>
+    <div className="space-y-4">
+      <DataTableToolbar table={table} />
       <div className="overflow-hidden rounded-lg border">
         <DndContext
           collisionDetection={closestCenter}
@@ -322,6 +288,6 @@ export function DataTable({
           </div>
         </div>
       </div>
-    </React.Fragment>
+    </div>
   );
 }
