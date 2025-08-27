@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "@/server/api/trpc";
+import { UrlStatus } from "@prisma/client";
 
 export const xtreamUrlRouter = createTRPCRouter({
   // Lấy tất cả xtream URLs
@@ -8,7 +9,7 @@ export const xtreamUrlRouter = createTRPCRouter({
       limit: z.number().min(1).max(100).default(50),
       cursor: z.string().nullish(),
       countryId: z.string().optional(),
-      status: z.string().optional(),
+      status: z.nativeEnum(UrlStatus).optional(),
       isExpired: z.boolean().optional(),
     }))
     .query(async ({ ctx, input }) => {
@@ -45,7 +46,7 @@ export const xtreamUrlRouter = createTRPCRouter({
     .input(z.object({
       countryId: z.string(),
       limit: z.number().min(1).max(100).default(50),
-      status: z.string().optional(),
+      status: z.nativeEnum(UrlStatus).optional(),
       isExpired: z.boolean().optional(),
     }))
     .query(async ({ ctx, input }) => {
@@ -101,7 +102,7 @@ export const xtreamUrlRouter = createTRPCRouter({
     .input(z.object({
       countryId: z.string(),
       url: z.string().url(),
-      status: z.string().optional(),
+      status: z.nativeEnum(UrlStatus).optional(),
       isExpired: z.boolean().default(false),
     }))
     .mutation(async ({ ctx, input }) => {
@@ -119,7 +120,7 @@ export const xtreamUrlRouter = createTRPCRouter({
       urls: z.array(z.object({
         countryId: z.string(),
         url: z.string().url(),
-        status: z.string().optional(),
+        status: z.nativeEnum(UrlStatus).optional(),
         isExpired: z.boolean().default(false),
       })),
     }))
@@ -135,7 +136,7 @@ export const xtreamUrlRouter = createTRPCRouter({
     .input(z.object({
       id: z.string(),
       url: z.string().url().optional(),
-      status: z.string().optional(),
+      status: z.nativeEnum(UrlStatus).optional(),
       isExpired: z.boolean().optional(),
     }))
     .mutation(async ({ ctx, input }) => {
@@ -153,7 +154,7 @@ export const xtreamUrlRouter = createTRPCRouter({
   updateStatus: protectedProcedure
     .input(z.object({
       ids: z.array(z.string()),
-      status: z.string(),
+      status: z.nativeEnum(UrlStatus).optional(),
       isExpired: z.boolean().optional(),
     }))
     .mutation(async ({ ctx, input }) => {
@@ -180,7 +181,7 @@ export const xtreamUrlRouter = createTRPCRouter({
         },
         data: {
           isExpired: true,
-          status: "EXPIRED",
+          status: UrlStatus.INACTIVE,
         },
       });
     }),
@@ -212,7 +213,7 @@ export const xtreamUrlRouter = createTRPCRouter({
     .input(z.object({
       olderThanDays: z.number().min(1).max(365).default(30),
     }))
-    .mutation(async ({ ctx, input }) => {
+    .mutation(async ({ ctx }) => {
       // Chỉ xóa các URL đã được đánh dấu expired
       return ctx.db.xtreamURL.deleteMany({
         where: {

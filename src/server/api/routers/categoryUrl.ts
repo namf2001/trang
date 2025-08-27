@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "@/server/api/trpc";
-
+import { UrlStatus } from "@prisma/client";
 export const categoryUrlRouter = createTRPCRouter({
   // Lấy tất cả category URLs
   getAll: publicProcedure
@@ -8,7 +8,7 @@ export const categoryUrlRouter = createTRPCRouter({
       limit: z.number().min(1).max(100).default(50),
       cursor: z.string().nullish(),
       categoryId: z.string().optional(),
-      status: z.string().optional(),
+      status: z.nativeEnum(UrlStatus).optional(),
       isExpired: z.boolean().optional(),
     }))
     .query(async ({ ctx, input }) => {
@@ -19,7 +19,7 @@ export const categoryUrlRouter = createTRPCRouter({
         cursor: cursor ? { id: cursor } : undefined,
         where: {
           ...(categoryId && { categoryId }),
-          ...(status && { status }),
+          ...(status && { status: status as UrlStatus }),
           ...(isExpired !== undefined && { isExpired }),
         },
         include: {
@@ -52,7 +52,7 @@ export const categoryUrlRouter = createTRPCRouter({
       return ctx.db.categoryURL.findMany({
         where: {
           categoryId: input.categoryId,
-          ...(input.status && { status: input.status }),
+          ...(input.status && { status: input.status as any }),
           ...(input.isExpired !== undefined && { isExpired: input.isExpired }),
         },
         include: {
@@ -101,7 +101,7 @@ export const categoryUrlRouter = createTRPCRouter({
     .input(z.object({
       categoryId: z.string(),
       url: z.string().url(),
-      status: z.string().optional(),
+      status: z.nativeEnum(UrlStatus).optional(),
       isExpired: z.boolean().default(false),
     }))
     .mutation(async ({ ctx, input }) => {
@@ -119,7 +119,7 @@ export const categoryUrlRouter = createTRPCRouter({
       urls: z.array(z.object({
         categoryId: z.string(),
         url: z.string().url(),
-        status: z.string().optional(),
+        status: z.nativeEnum(UrlStatus).optional(),
         isExpired: z.boolean().default(false),
       })),
     }))
@@ -135,7 +135,7 @@ export const categoryUrlRouter = createTRPCRouter({
     .input(z.object({
       id: z.string(),
       url: z.string().url().optional(),
-      status: z.string().optional(),
+      status: z.nativeEnum(UrlStatus).optional(),
       isExpired: z.boolean().optional(),
     }))
     .mutation(async ({ ctx, input }) => {
@@ -162,7 +162,7 @@ export const categoryUrlRouter = createTRPCRouter({
           id: { in: input.ids },
         },
         data: {
-          status: input.status,
+          status: input.status as any,
           ...(input.isExpired !== undefined && { isExpired: input.isExpired }),
         },
       });
@@ -180,7 +180,7 @@ export const categoryUrlRouter = createTRPCRouter({
         },
         data: {
           isExpired: true,
-          status: "EXPIRED",
+          status: UrlStatus.INACTIVE,
         },
       });
     }),

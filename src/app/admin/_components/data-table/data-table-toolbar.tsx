@@ -5,6 +5,7 @@ import {
   IconLayoutColumns,
   IconSearch,
   IconX,
+  IconPlus,
 } from "@tabler/icons-react"
 import {
   type Table,
@@ -21,10 +22,14 @@ import { Input } from "@/components/ui/input"
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>
+  onAdd?: () => void
+  addButtonLabel?: string
 }
 
 export function DataTableToolbar<TData>({
   table,
+  onAdd,
+  addButtonLabel = "Add Item",
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0
 
@@ -54,6 +59,12 @@ export function DataTableToolbar<TData>({
         )}
       </div>
       <div className="flex items-center space-x-2">
+        {onAdd && (
+          <Button onClick={onAdd} size="sm" className="h-8">
+            <IconPlus className="mr-2 h-4 w-4" />
+            {addButtonLabel}
+          </Button>
+        )}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" size="sm" className="ml-auto hidden h-8 lg:flex">

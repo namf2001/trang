@@ -49,9 +49,9 @@ export async function AppSidebar({ ...props }: React.ComponentProps<typeof Sideb
   const { user } = session;
   
   const userData = {
-    name: user.name || "Unknown User",
-    email: user.email || "",
-    avatar: user.image || "/default-avatar.png", 
+    name: user.name ?? "Unknown User",
+    email: user.email ?? "",
+    avatar: user.image ?? "/default-avatar.png", 
   };
 
   return (

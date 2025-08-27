@@ -401,6 +401,13 @@ export function DataTable({
     }
   }
 
+  function handleAddItem(newItem: Omit<z.infer<typeof schema>, 'id'>) {
+    setData((prevData) => [
+      ...prevData,
+      { ...newItem, id: prevData.length + 1 },
+    ])
+  }
+
   return (
     <Tabs
       defaultValue="outline"
@@ -469,10 +476,15 @@ export function DataTable({
                 })}
             </DropdownMenuContent>
           </DropdownMenu>
-          <Button variant="outline" size="sm">
-            <IconPlus />
-            <span className="hidden lg:inline">Add Section</span>
-          </Button>
+          <AddItemDialog
+            onAdd={handleAddItem}
+            trigger={
+              <Button variant="outline" size="sm">
+                <IconPlus />
+                <span className="hidden lg:inline">Add Section</span>
+              </Button>
+            }
+          />
         </div>
       </div>
       <TabsContent
@@ -801,6 +813,123 @@ function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
             <Button variant="outline">Done</Button>
           </DrawerClose>
         </DrawerFooter>
+      </DrawerContent>
+    </Drawer>
+  )
+}
+
+// Add new item dialog
+function AddItemDialog({ 
+  onAdd, 
+  trigger 
+}: { 
+  onAdd: (item: Omit<z.infer<typeof schema>, 'id'>) => void;
+  trigger: React.ReactNode;
+}) {
+  const isMobile = useIsMobile()
+  const [open, setOpen] = React.useState(false)
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const formData = new FormData(e.currentTarget)
+    
+    const newItem = {
+      header: formData.get('header') as string,
+      type: formData.get('type') as string,
+      status: formData.get('status') as string,
+      target: formData.get('target') as string,
+      limit: formData.get('limit') as string,
+      reviewer: formData.get('reviewer') as string,
+    }
+    
+    onAdd(newItem)
+    setOpen(false)
+    toast.success("Item added successfully!")
+  }
+
+  return (
+    <Drawer direction={isMobile ? "bottom" : "right"} open={open} onOpenChange={setOpen}>
+      <DrawerTrigger asChild>
+        {trigger}
+      </DrawerTrigger>
+      <DrawerContent>
+        <DrawerHeader className="gap-1">
+          <DrawerTitle>Add New Item</DrawerTitle>
+          <DrawerDescription>
+            Create a new item with the details below
+          </DrawerDescription>
+        </DrawerHeader>
+        <div className="flex flex-col gap-4 overflow-y-auto px-4 text-sm">
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            <div className="flex flex-col gap-3">
+              <Label htmlFor="add-header">Header</Label>
+              <Input id="add-header" name="header" placeholder="Enter header" required />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="flex flex-col gap-3">
+                <Label htmlFor="add-type">Type</Label>
+                <Select name="type" defaultValue="Narrative">
+                  <SelectTrigger id="add-type" className="w-full">
+                    <SelectValue placeholder="Select a type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Table of Contents">Table of Contents</SelectItem>
+                    <SelectItem value="Executive Summary">Executive Summary</SelectItem>
+                    <SelectItem value="Technical Approach">Technical Approach</SelectItem>
+                    <SelectItem value="Design">Design</SelectItem>
+                    <SelectItem value="Capabilities">Capabilities</SelectItem>
+                    <SelectItem value="Focus Documents">Focus Documents</SelectItem>
+                    <SelectItem value="Narrative">Narrative</SelectItem>
+                    <SelectItem value="Cover Page">Cover Page</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="flex flex-col gap-3">
+                <Label htmlFor="add-status">Status</Label>
+                <Select name="status" defaultValue="Not Started">
+                  <SelectTrigger id="add-status" className="w-full">
+                    <SelectValue placeholder="Select a status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Done">Done</SelectItem>
+                    <SelectItem value="In Progress">In Progress</SelectItem>
+                    <SelectItem value="Not Started">Not Started</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="flex flex-col gap-3">
+                <Label htmlFor="add-target">Target</Label>
+                <Input id="add-target" name="target" placeholder="0" defaultValue="0" />
+              </div>
+              <div className="flex flex-col gap-3">
+                <Label htmlFor="add-limit">Limit</Label>
+                <Input id="add-limit" name="limit" placeholder="0" defaultValue="0" />
+              </div>
+            </div>
+            <div className="flex flex-col gap-3">
+              <Label htmlFor="add-reviewer">Reviewer</Label>
+              <Select name="reviewer" defaultValue="Assign reviewer">
+                <SelectTrigger id="add-reviewer" className="w-full">
+                  <SelectValue placeholder="Select a reviewer" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Assign reviewer">Assign reviewer</SelectItem>
+                  <SelectItem value="Eddie Lake">Eddie Lake</SelectItem>
+                  <SelectItem value="Jamik Tashpulatov">Jamik Tashpulatov</SelectItem>
+                  <SelectItem value="Emily Whalen">Emily Whalen</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="flex gap-2 pt-4">
+              <Button type="submit" className="flex-1">Add Item</Button>
+              <DrawerClose asChild>
+                <Button type="button" variant="outline" className="flex-1">Cancel</Button>
+              </DrawerClose>
+            </div>
+          </form>
+        </div>
       </DrawerContent>
     </Drawer>
   )
