@@ -17,7 +17,7 @@ export default function XtreamUrlPage() {
         </div>
 
         <Suspense fallback={<Loading />}>
-          <XtreamStats />
+          <XtreamStats /> 
         </Suspense>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">

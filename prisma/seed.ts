@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, UrlStatus } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -71,7 +71,7 @@ async function main() {
     'http://example-stream10.com/play',
   ];
 
-  const statuses = ['Active', 'Inactive', 'Pending', 'Maintenance', 'Testing'];
+  const statuses = [UrlStatus.ACTIVE, UrlStatus.INACTIVE];
 
   console.log('🔗 Seeding country URLs...');
   for (const country of createdCountries.slice(0, 10)) {
@@ -81,7 +81,7 @@ async function main() {
         data: {
           countryId: country.id,
           url: `${urlsForCountry[i]}/${country.name.toLowerCase().replace(/\s+/g, '-')}/${i + 1}`,
-          status: statuses[Math.floor(Math.random() * statuses.length)],
+          status: statuses[Math.floor(Math.random() * statuses.length)]!,
           isExpired: Math.random() < 0.1,
         },
       });
@@ -96,7 +96,7 @@ async function main() {
         data: {
           categoryId: category.id,
           url: `${urlsForCategory[i]}/${category.name.toLowerCase()}/${i + 1}`,
-          status: statuses[Math.floor(Math.random() * statuses.length)],
+          status: statuses[Math.floor(Math.random() * statuses.length)]!,
           isExpired: Math.random() < 0.15,
         },
       });
@@ -115,14 +115,14 @@ async function main() {
   let xtreamIndex = 0;
   for (const country of xtreamCountries) {
     for (let i = 0; i < 2; i++) {
-      const cred = xtreamCredentials[xtreamIndex % xtreamCredentials.length]!; // assert exists
+      const cred = xtreamCredentials[xtreamIndex % xtreamCredentials.length]!;
       const base = 'http://pazzy.xyz:8080/get.php';
       const url = `${base}?username=${cred.username}&password=${cred.password}&type=m3u&output=ts`;
       await prisma.xtreamURL.create({
         data: {
           countryId: country.id,
           url,
-          status: i % 2 === 0 ? 'Active' : 'Backup',
+          status: i % 2 === 0 ? UrlStatus.ACTIVE : UrlStatus.INACTIVE,
           isExpired: false,
         },
       });
@@ -145,7 +145,7 @@ async function main() {
     ];
     for (const sportsUrl of sportsUrls) {
       await prisma.categoryURL.create({
-        data: { categoryId: sportsCategory.id, url: sportsUrl, status: 'Premium', isExpired: false },
+        data: { categoryId: sportsCategory.id, url: sportsUrl, status: UrlStatus.ACTIVE, isExpired: false },
       });
     }
   }
@@ -159,7 +159,7 @@ async function main() {
     ];
     for (const movieUrl of movieUrls) {
       await prisma.categoryURL.create({
-        data: { categoryId: moviesCategory.id, url: movieUrl, status: 'Premium', isExpired: false },
+        data: { categoryId: moviesCategory.id, url: movieUrl, status: UrlStatus.ACTIVE, isExpired: false },
       });
     }
   }
@@ -173,7 +173,7 @@ async function main() {
     ];
     for (const newsUrl of newsUrls) {
       await prisma.categoryURL.create({
-        data: { categoryId: newsCategory.id, url: newsUrl, status: 'Active', isExpired: false },
+        data: { categoryId: newsCategory.id, url: newsUrl, status: UrlStatus.ACTIVE, isExpired: false },
       });
     }
   }
@@ -189,7 +189,7 @@ async function main() {
     ];
     for (const vietnamUrl of vietnamUrls) {
       await prisma.countryURL.create({
-        data: { countryId: vietnamCountry.id, url: vietnamUrl, status: 'Active', isExpired: false },
+        data: { countryId: vietnamCountry.id, url: vietnamUrl, status: UrlStatus.ACTIVE, isExpired: false },
       });
     }
   }

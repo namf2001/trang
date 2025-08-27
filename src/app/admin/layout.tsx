@@ -1,14 +1,11 @@
 import { AppSidebar } from "@/app/admin/_components/app-sidebar"
-import { ChartAreaInteractive } from "@/app/admin/_components/chart-area-interactive"
-import { DataTable } from "@/app/admin/_components/data-table"
-import { SectionCards } from "@/app/admin/_components/section-cards"
 import { SiteHeader } from "@/app/admin/_components/site-header"
 import {
   SidebarInset,
   SidebarProvider,
 } from "@/components/ui/sidebar"
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function Layout({ children }: { readonly children: React.ReactNode }) {
   return (
     <SidebarProvider
       style={

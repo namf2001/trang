@@ -58,6 +58,11 @@ enum Role {
     ADMIN
 }
 
+enum UrlStatus {
+    ACTIVE
+    INACTIVE
+}
+
 model VerificationToken {
     identifier String
     token      String   @unique
@@ -99,12 +104,12 @@ model Country {
 }
 
 model CountryURL {
-    id        String  @id @default(cuid())
-    country   Country @relation(fields: [countryId], references: [id], onDelete: Cascade)
+    id        String    @id @default(cuid())
+    country   Country   @relation(fields: [countryId], references: [id], onDelete: Cascade)
     countryId String
     url       String
-    status    String?
-    isExpired Boolean @default(false)
+    status    UrlStatus @default(ACTIVE)
+    isExpired Boolean   @default(false)
 
     @@unique([countryId, url])
     @@index([url])
@@ -118,12 +123,12 @@ model Category {
 }
 
 model CategoryURL {
-    id         String   @id @default(cuid())
-    category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+    id         String    @id @default(cuid())
+    category   Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
     categoryId String
     url        String
-    status     String?
-    isExpired  Boolean  @default(false)
+    status     UrlStatus @default(ACTIVE)
+    isExpired  Boolean   @default(false)
 
     @@unique([categoryId, url])
     @@index([url])
@@ -131,12 +136,12 @@ model CategoryURL {
 }
 
 model XtreamURL {
-    id        String  @id @default(cuid())
+    id        String    @id @default(cuid())
     url       String
-    country   Country @relation(fields: [countryId], references: [id], onDelete: Cascade)
+    country   Country   @relation(fields: [countryId], references: [id], onDelete: Cascade)
     countryId String
-    status    String?
-    isExpired Boolean @default(false)
+    status    UrlStatus @default(ACTIVE)
+    isExpired Boolean   @default(false)
 
     @@index([url])
     @@index([status])

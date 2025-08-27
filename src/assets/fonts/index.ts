@@ -24,12 +24,3 @@ export const kamerik205 = localFont({
   preload: true,
   fallback: ['system-ui', 'arial', 'sans-serif'],
 })
-
-// Alternative single weight configuration (if you only have one font file)
-export const kamerik205Single = localFont({
-  src: './Kamerik205-Regular.woff2',
-  variable: '--font-kamerik205',
-  display: 'swap',
-  preload: true,
-  fallback: ['system-ui', 'arial', 'sans-serif'],
-})

@@ -18,6 +18,7 @@ export const metadata: Metadata = {
 const geist = Geist({
   subsets: ["latin"],
   variable: "--font-geist-sans",
+  display: 'swap',
 });
 
 export default function RootLayout({
@@ -25,7 +26,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${geist.variable} ${kamerik205.variable}`}>
-      <body suppressHydrationWarning>
+      <body className={`${geist.className} font-sans antialiased`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="light"
