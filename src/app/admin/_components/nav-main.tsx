@@ -12,6 +12,7 @@ import {
   IconHelp,
   IconInnerShadowTop,
   IconListDetails,
+  IconPlus,
   IconReport,
   IconSearch,
   IconSettings,
@@ -43,6 +44,7 @@ const iconMap = {
   IconReport,
   IconFileWord,
   IconInnerShadowTop,
+  IconPlus,
 } as const
 
 type IconName = keyof typeof iconMap

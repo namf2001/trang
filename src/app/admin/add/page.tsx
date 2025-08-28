@@ -72,20 +72,20 @@ export default function AddDataPage() {
   const { data: countries } = api.country.getAll.useQuery({})
   const { data: categories } = api.category.getAll.useQuery({})
 
-  // Default values for forms
-  const singleFormDefaults: SingleUrlForm = {
+  // Default values for forms - memoize to prevent recreation on every render
+  const singleFormDefaults: SingleUrlForm = React.useMemo(() => ({
     url: "",
     status: UrlStatus.ACTIVE,
     countryId: undefined,
     categoryId: undefined,
-  }
+  }), [])
 
-  const multipleFormDefaults: MultipleUrlForm = {
+  const multipleFormDefaults: MultipleUrlForm = React.useMemo(() => ({
     urls: "",
     status: UrlStatus.ACTIVE,
     countryId: undefined,
     categoryId: undefined,
-  }
+  }), [])
 
   // Single URL form
   const singleForm = useForm<SingleUrlForm>({

@@ -4,6 +4,8 @@ import { auth } from "@/server/auth"
 
 import {
   IconInnerShadowTop,
+  IconDashboard,
+  IconPlus,
 } from "@tabler/icons-react"
 
 import { NavMain } from "@/app/admin/_components/nav-main"
@@ -23,18 +25,12 @@ const data = {
     {
       title: "Dashboard",
       url: "/admin",
+      iconName: "IconDashboard" as const,
     },
     {
-      title: "Countries", 
-      url: "/countries",
-    },
-    {
-      title: "Xtream",
-      url: "/xtream", 
-    },
-    {
-      title: "Category",
-      url: "/category",
+      title: "Add",
+      url: "/admin/add",
+      iconName: "IconPlus" as const,
     },
   ],
 }
