@@ -120,4 +120,29 @@ export const countryRouter = createTRPCRouter({
         where: { id: input.id },
       });
     }),
+
+  // Tìm hoặc tạo country mới
+  findOrCreate: protectedProcedure
+    .input(z.object({
+      name: z.string().min(1).max(100),
+    }))
+    .mutation(async ({ ctx, input }) => {
+      // Tìm country đã tồn tại (case insensitive)
+      const existingCountry = await ctx.db.country.findFirst({
+        where: {
+          name: { equals: input.name, mode: "insensitive" }
+        }
+      });
+
+      if (existingCountry) {
+        return existingCountry;
+      }
+
+      // Tạo country mới nếu chưa tồn tại
+      return ctx.db.country.create({
+        data: {
+          name: input.name.trim()
+        }
+      });
+    }),
 });

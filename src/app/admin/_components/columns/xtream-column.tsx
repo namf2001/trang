@@ -11,7 +11,6 @@ import {
   IconGripVertical,
   IconEdit,
   IconTrash,
-  IconPlus,
 } from "@tabler/icons-react"
 import {
   type ColumnDef,

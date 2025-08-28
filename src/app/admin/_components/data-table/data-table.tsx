@@ -89,10 +89,8 @@ function DraggableRow({ row }: { readonly row: Row<any> }) {
 interface DataTableProps<TData> {
   data: TData[]
   columns: ColumnDef<TData, any>[]
-  onAdd?: (item: Omit<TData, 'id'>) => void
-  onEdit?: (id: string, updatedItem: Partial<TData>) => void
-  onDelete?: (id: string) => void
-  addButtonLabel?: string
+  onEdit: (id: string, updatedItem: Partial<TData>) => void
+  onDelete: (id: string) => void
 }
 
 // Create context for CRUD operations
@@ -112,11 +110,9 @@ export const useCRUD = () => {
 export function DataTable<TData extends { id: string }>({
   data: initialData,
   columns,
-  onAdd,
   onEdit,
   onDelete,
-  addButtonLabel = "Add Item",
-}: DataTableProps<TData>) {
+}: Readonly<DataTableProps<TData>>) {
   const [data, setData] = React.useState(initialData)
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
@@ -139,13 +135,6 @@ export function DataTable<TData extends { id: string }>({
   )
 
   const sortableId = React.useId()
-
-  // Handle CRUD operations
-  const handleAdd = React.useCallback((newItem: Omit<TData, 'id'>) => {
-    const itemWithId = { ...newItem, id: crypto.randomUUID() } as TData
-    setData(prev => [itemWithId, ...prev])
-    if (onAdd) onAdd(newItem)
-  }, [onAdd])
 
   const handleEdit = React.useCallback((id: string, updatedItem: Partial<TData>) => {
     setData(prev => prev.map(item => 
@@ -205,8 +194,6 @@ export function DataTable<TData extends { id: string }>({
       <div className="space-y-4">
         <DataTableToolbar 
           table={table} 
-          onAdd={onAdd ? () => handleAdd({} as Omit<TData, 'id'>) : undefined}
-          addButtonLabel={addButtonLabel}
         />
         <div className="overflow-hidden rounded-lg border">
           <DndContext

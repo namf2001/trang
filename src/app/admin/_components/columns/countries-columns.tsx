@@ -261,9 +261,9 @@ function DeleteItemDialog({
   onDelete,
   trigger 
 }: { 
-  item: z.infer<typeof schema>;
-  onDelete: (id: string) => void;
-  trigger: React.ReactNode;
+  readonly item: z.infer<typeof schema>;
+  readonly onDelete: (id: string) => void;
+  readonly trigger: React.ReactNode;
 }) {
   const handleDelete = () => {
     onDelete(item.id)
