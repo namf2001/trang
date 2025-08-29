@@ -84,11 +84,11 @@ unlimited choices"
 
         {/* Download buttons */}
         <div className="flex gap-4 md:gap-14 justify-center items-center">
-        <Link href="#" className="flex items-center">
+        <Link href="https://play.google.com/store/apps/details?id=com.iptv.smartplayer.onlinetv&hl=vi&pli=1" className="flex items-center" target="_blank" rel="noopener noreferrer">
 
           <Button
             variant="outline"
-            className="text-black hover:bg-gray-100 h-auto px-2 py-1"
+            className="text-black hover:bg-gray-100 h-auto px-2 py-1 cursor-pointer"
           >
               <Image
                 src={googlePlay}
@@ -107,9 +107,9 @@ unlimited choices"
           <Button
             asChild
             variant="outline"
-            className="bg-white text-black hover:bg-gray-100 h-auto px-2 py-1"
+            className="bg-white text-black hover:bg-gray-100 h-auto px-2 py-1 cursor-pointer"
           >
-            <Link href="#" className="flex items-center">
+            <Link href="https://apps.apple.com/app/smart-iptv-player-online-tv/id6686402003" className="flex items-center" target="_blank" rel="noopener noreferrer">
               <Image
                 src={apple}
                 alt="App Store Icon"
