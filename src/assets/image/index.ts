@@ -31,6 +31,8 @@ import faq10 from './faq-10.png';
 import faq11 from './faq-11.png';
 import notFound404 from './404.png';
 import loginBg from './login-bg.jpg'
+import step2 from './step-2.png';
+import step3 from './step-3.png';
 
 // Export all images
 export {
@@ -65,7 +67,9 @@ export {
   faq10,
   faq11,
   notFound404,
-  loginBg
+  loginBg,
+  step2,
+  step3
 };
 
 // Export as default object for convenience
@@ -101,7 +105,9 @@ const images = {
   faq10,
   faq11,
   notFound404,
-  loginBg
+  loginBg,
+  step2,
+  step3
 };
 
 export default images;

@@ -31,7 +31,8 @@ export default function ExampleSection() {
                 className="bg-[#1B1B1E] text-white text-sm sm:text-base lg:text-lg border-0 py-3 sm:py-4 lg:py-6 w-full"
               />
               <Button
-                className="bg-primary-foreground hover:bg-orange-600 text-white text-sm sm:text-base lg:text-lg w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-3"
+                variant="iptvsecondary"
+                className="text-sm sm:text-base lg:text-lg w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-3"
                 size="lg"
               >
                 <Copy className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
@@ -55,7 +56,8 @@ export default function ExampleSection() {
                 className="bg-[#1B1B1E] text-white text-sm sm:text-base lg:text-lg border-0 py-3 sm:py-4 lg:py-6 w-full"
               />
               <Button
-                className="bg-primary-foreground hover:bg-orange-600 text-white text-sm sm:text-base lg:text-lg w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-3"
+                variant="iptvsecondary"
+                className="text-sm sm:text-base lg:text-lg w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-3"
                 size="lg"
               >
                 <Copy className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
@@ -87,7 +89,8 @@ export default function ExampleSection() {
                   className="bg-[#1B1B1E] text-white text-sm sm:text-base lg:text-lg border-0 py-3 sm:py-4 lg:py-6 flex-1"
                 />
                 <Button
-                  className="bg-primary-foreground hover:bg-orange-600 text-white p-3 sm:p-4 lg:p-6 w-full sm:w-auto text-xs sm:text-sm lg:text-base"
+                  variant="iptvsecondary"
+                  className="p-3 sm:p-4 lg:p-6 w-full sm:w-auto text-xs sm:text-sm lg:text-base"
                 >
                   <Copy className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
                   Copy
@@ -109,7 +112,8 @@ export default function ExampleSection() {
                   className="bg-[#1B1B1E] text-white text-sm sm:text-base lg:text-lg border-0 py-3 sm:py-4 lg:py-6 flex-1"
                 />
                 <Button
-                  className="bg-primary-foreground hover:bg-orange-600 text-white p-3 sm:p-4 lg:p-6 w-full sm:w-auto text-xs sm:text-sm lg:text-base"
+                  variant="iptvsecondary"
+                  className="p-3 sm:p-4 lg:p-6 w-full sm:w-auto text-xs sm:text-sm lg:text-base"
                 >
                   <Copy className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
                   Copy
@@ -131,7 +135,8 @@ export default function ExampleSection() {
                   className="bg-[#1B1B1E] text-white text-sm sm:text-base lg:text-lg border-0 py-3 sm:py-4 lg:py-6 flex-1"
                 />
                 <Button
-                  className="bg-primary-foreground hover:bg-orange-600 text-white p-3 sm:p-4 lg:p-6 w-full sm:w-auto text-xs sm:text-sm lg:text-base"
+                  variant="iptvsecondary"
+                  className="p-3 sm:p-4 lg:p-6 w-full sm:w-auto text-xs sm:text-sm lg:text-base"
                 >
                   <Copy className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
                   Copy

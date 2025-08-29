@@ -4,8 +4,6 @@ import { auth } from "@/server/auth"
 
 import {
   IconInnerShadowTop,
-  IconDashboard,
-  IconPlus,
 } from "@tabler/icons-react"
 
 import { NavMain } from "@/app/admin/_components/nav-main"

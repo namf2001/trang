@@ -23,7 +23,7 @@ export default function CountryUrls({ countries }: Readonly<{ countries: Country
   }, [countries]);
 
   const handleFilterChange = (searchTerm: string) => {
-    const filtered = countries.filter(country => 
+    const filtered = countries.filter(country =>
       country.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredCountries(filtered);
@@ -39,9 +39,9 @@ export default function CountryUrls({ countries }: Readonly<{ countries: Country
         <div className='max-w-[272px]'>
           <Input
             type="text"
-            placeholder="Search countries..."
+            placeholder="Search for your country..."
             onChange={(e) => handleFilterChange(e.target.value)}
-            className="w-full p-2 rounded-md border border-gray-300"
+            className="w-[272px] h-[44px] py-2 px-4 rounded-3xl border border-orange-400"
           />
         </div>
       </div>
@@ -94,8 +94,9 @@ export function CountryList({ countries }: Readonly<{ countries: CountryListProp
                       </div>
                       <Button
                         size="sm"
+                        variant="iptvsecondary"
                         onClick={() => handleCopyToClipboard(url.url, url.id)}
-                        className="ml-2 p-0 bg-primary-foreground text-white hover:text-white hover:bg-white/10 transition-opacity"
+                        className="ml-2 p-0 hover:bg-white/10 transition-opacity"
                       >
                         {copiedId === url.id ? (
                           <>
